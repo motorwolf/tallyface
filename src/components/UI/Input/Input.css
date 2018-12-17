@@ -1,0 +1,14 @@
+input {
+  font-size: 1em;
+  max-width: 3em;
+  background-color: var(--mainText);
+  color: var(--mainColor);
+  font-weight: bold;
+  padding: 10px;
+  border: none; 
+}
+label {
+  display: block;
+  padding: 10px;
+  margin: 10px;
+}

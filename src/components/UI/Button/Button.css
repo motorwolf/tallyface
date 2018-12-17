@@ -1,0 +1,11 @@
+.count {
+  padding: 10px;
+  font-size: 1em;
+  width: 1.95em;
+}
+.count.dec {
+  border-right: 3px solid var(--mainColor);
+}
+.count.inc {
+  border-left: 3px solid var(--mainColor);
+}
