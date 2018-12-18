@@ -3,13 +3,14 @@ import './Input.css';
 import Button from '../Button/Button.js';
 
 const input = (props) => {
-  let defaultValue = 0; 
   return (
-    <label>
+    <div className="questionBlock">
+    <label htmlFor={props.name}>
       {props.question}
+    </label>
       <Button className="count" type="dec" pressCalc={props.calc}>
         -</Button>
-      <input className="surveyVal" type="text" 
+      <input className="surveyVal" type="text" name={props.name} 
         onInput={(e) => {
         if(isNaN(e.target.value)){
           console.log("This is not a number.");
@@ -30,7 +31,7 @@ const input = (props) => {
       }
         }
       /><Button className="count" type="inc" pressCalc={props.calc}>+</Button>
-    </label>
+  </div>
   );
 
   }

@@ -1,16 +1,14 @@
 :root {
   --background: #A65337; 
   --mainColor: #F28B69;
-  --mainText: #FFD5A8;
-  --highlightColor: #69F2D1;
-
+  --mainText: #FFE5b8;
+  --highlightColor: #59D2A1;
+  --highlightText: #DDFFFF;
 }
 .App {
   display: grid;
-  height: 100vh;
   grid-auto-rows: minmax(150px, auto);
-  grid-template-rows: 1fr 1fr 3fr 2fr;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(16px + 2vmin);
   background-color: var(--mainColor);
   grid-template-areas:
   "header"
@@ -22,16 +20,19 @@ header,
 footer,
 .subheader,
 main {
-  text-align: center;
+  /* text-align: center; */
   box-sizing: border-box;
   padding: 20px;
 }
 .subheader {
   display: flex;
-  color: #DDFFFF;
+  color: var(--highlightText);
   font-weight: bold;
   grid-area: subheader;
   background-color: var(--highlightColor);
+}
+.scores {
+  flex-grow: 2;
 }
 header {
   grid-column-start: 1;
@@ -44,6 +45,8 @@ main {
 
 footer {
   grid-area: footer;
+  background-color: var(--highlightColor);
+  color: var(--highlightText);
 }
 body {
   font-size: calc(10px + 2vmin);

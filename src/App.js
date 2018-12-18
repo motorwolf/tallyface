@@ -9,12 +9,30 @@ import Input from './components/UI/Input/Input.js';
     4: 'happy',
     5: 'ecstatic'
   }
+const questions = {
+  service: ['How friendly was your server?','How quickly was your order served?', 'How knowledgeable was your server?'],
+  food: ['How was the quality of your meal?','How was the appearance of your food?', 'How was the flavor of your food?'],
+  setting: ['How clean was the dining room?',"How comfortable was your seating?","How was the ambiance of the dining room?"]
+};
+
 class App extends Component {
   state = {
     tally: 0,
     mood: 'neutral'
   };
-  
+
+  questionCategoryOutput = () => {
+  let jsxy = [];
+  for(let category in questions){
+    jsxy.push(<h2> {category.toUpperCase()} </h2>);
+    jsxy.push(questions[category].map((q,i) => {
+    return <Input question={q} calc={this.calculator} section={category} key={category + (i+1)} name={category + (i+1)}/>;
+  }));
+  }
+  return jsxy;
+  }
+
+
   calculator = () => {
     // calculates all of the fields to determine overall 'mood'
     let surveyValues = document.getElementsByClassName("surveyVal");
@@ -34,6 +52,10 @@ class App extends Component {
     })
   }
 
+  getMood = (currentMood) => {
+    return `./assets/${currentMood}.PNG`;
+  }
+  
   render() {
     return (
       <div className="App">
@@ -42,24 +64,14 @@ class App extends Component {
           <p>How did we do? Please rate on a scale of 1-5.</p>
         </header>
         <div className="subheader">
-              <h3>CURRENT SCORE : {this.state.tally}</h3>
-              <h3>CURRENT MOOD : {this.state.mood}</h3>
-              <img src="https://picsum.photos/200/200"/>
+          <div className="scores">
+            <h3>CURRENT SCORE : {this.state.tally}</h3>
+            <h3>CURRENT MOOD : {this.state.mood}</h3>
+          </div>
+          <img src={require(`./assets/${this.state.mood}.PNG`)} width="160" height="160"/>
         </div>
         <main>
-          <h2> SERVICE </h2>
-          <Input question="How friendly was your server?" calc={this.calculator} section="service"/>
-          <Input question="How quickly was your order served?" calc={this.calculator} section="service"/>
-          <Input question="How knowledgeable was your server?" calc={this.calculator} section="service"/>
-          <h2> FOOD </h2>
-          <Input question="How was the quality of your meal?" calc={this.calculator} section="food"/>
-          <Input question="How was the appearance of your food?" calc={this.calculator} section="food"/>
-          <Input question="How was the flavor of your food?" calc={this.calculator} section="food"/>
-          <h2> SETTING </h2>
-          <Input question="How clean was the dining room?" calc={this.calculator}section="setting"/>
-            <Input question="How comfortable was your seating?" calc={this.calculator} section="setting"/>
-            <Input question="How was the ambiance of the dining room?" calc={this.calculator} section="setting"/>
-          <textarea></textarea>
+          {this.questionCategoryOutput()}
         </main>
         <footer>
           WHAT'S THE DAMAGE?
