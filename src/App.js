@@ -20,7 +20,7 @@ class App extends Component {
     tally: 0,
     mood: 'neutral'
   };
-
+  
   questionCategoryOutput = () => {
   let jsxy = [];
   for(let category in questions){
@@ -60,15 +60,17 @@ class App extends Component {
     return (
       <div className="App">
         <header>
+          <div>
           <h1>SATISFACTION SURVEY</h1>
-          <p>How did we do? Please rate on a scale of 1-5.</p>
+          <p>Please rate on a scale of 1-5.</p>
+        </div>
         </header>
-        <div className="subheader">
-          <div className="scores">
-            <h3>CURRENT SCORE : {this.state.tally}</h3>
-            <h3>CURRENT MOOD : {this.state.mood}</h3>
-          </div>
-          <img src={require(`./assets/${this.state.mood}.PNG`)} width="160" height="160"/>
+        <div id="subheader">
+            <div className="score">
+            <h3>SCORE : {this.state.tally}</h3>
+            <h3>MOOD : {this.state.mood}</h3>
+        </div>
+        <div id="floatingHead"><img src={require(`./assets/${this.state.mood}.PNG`)}/></div>
         </div>
         <main>
           {this.questionCategoryOutput()}

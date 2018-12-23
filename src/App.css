@@ -5,9 +5,15 @@
   --highlightColor: #59D2A1;
   --highlightText: #DDFFFF;
 }
+h1,h2,h3 {
+margin: 0;
+}
+
+main h2 {
+  margin-top: 1em;
+}
 .App {
   display: grid;
-  grid-auto-rows: minmax(150px, auto);
   font-size: calc(16px + 2vmin);
   background-color: var(--mainColor);
   grid-template-areas:
@@ -18,28 +24,42 @@
 }
 header,
 footer,
-.subheader,
+#subheader,
 main {
   /* text-align: center; */
   box-sizing: border-box;
-  padding: 20px;
+  padding: 20px ;
 }
-.subheader {
-  display: flex;
+
+#floatingHead {
+  width: 5em;
+}
+#floatingHead img {
+  width: 100%;
+}
+
+#subheader {
   color: var(--highlightText);
   font-weight: bold;
   grid-area: subheader;
+  position: sticky;
+  top: 0px;
+  display: flex;
+  padding: 0 1em;
   background-color: var(--highlightColor);
 }
-.scores {
-  flex-grow: 2;
+.score {
+  padding: 1em 0;
+  flex: auto; 
 }
 header {
+  display: flex;
   grid-column-start: 1;
   grid-column-end: -1;
   grid-area: header;
 }
 main {
+  padding: 0 20px 20px;
   grid-area: main;
 }
 
@@ -47,6 +67,9 @@ footer {
   grid-area: footer;
   background-color: var(--highlightColor);
   color: var(--highlightText);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 body {
   font-size: calc(10px + 2vmin);
@@ -57,4 +80,22 @@ button {
   background-color: var(--mainText);
   border: none;
   color: var(--background);
+}
+label {
+margin: 0;
+padding: 0;
+}
+
+input {
+  font-size: 1em;
+  max-width: 3em;
+  background-color: var(--mainText);
+  color: var(--mainColor);
+  font-weight: bold;
+  padding: 10px;
+  border: none; 
+}
+label {
+  display: block;
+  margin: 1em 0 0.3em;
 }
