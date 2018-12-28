@@ -31,7 +31,83 @@ class App extends Component {
   }
   return jsxy;
   }
+  validator = () => {
+    let surveyValues = document.getElementsByClassName("surveyVal");
+    let validated = true;
+     for(let value in surveyValues){
+       if(!surveyValues[value].value && surveyValues[value].tagName === 'INPUT'){
+         surveyValues[value].className += " problem";
+        let resultText = document.getElementById("resultText");
+         resultText.textContent ="Oops, you may have missed a few fields. To calculate the results, fill in the missing data.";
+         validated = false;
+       }
+     }
+    if(validated){
+      this.results();
+    }
+  }
 
+  results = () => {
+    let statement = "";
+    let categoryStatement = "";
+    let score = this.state.tally;
+    let mood =  this.state.mood;
+    let foodScore = this.htmlElementValueExtractor(document.getElementsByClassName("food"));
+    let settingScore = this.htmlElementValueExtractor(document.getElementsByClassName("setting"));
+    let serviceScore = this.htmlElementValueExtractor(document.getElementsByClassName('service'));
+    let categoryScores = [[foodScore,'food'],[settingScore,'setting'],[serviceScore,'service']].sort((a,b) => {return b[0] - a[0]});
+    console.log(categoryScores);
+    console.log(foodScore, settingScore,serviceScore);
+    if(foodScore === settingScore && settingScore === serviceScore){
+      categoryStatement = "We did equally well on all categories."
+    } else {
+      if(categoryScores[0][0] === categoryScores[1][0]){
+        categoryStatement = `Our top two categories were ${categoryScores[0][1]} and ${categoryScores[1][1]}.`;
+      }
+      else {
+        categoryStatement = `Our top category was ${categoryScores[0][1]}.`
+      }
+      if(categoryScores[2][0] === categoryScores[1][0]){
+        categoryStatement += ` Our two worst categories were ${categoryScores[1][1]} and ${categoryScores[2][1]}`;
+      }
+      else {
+        categoryStatement += ` Our worst category was ${categoryScores[2][1]}.`;
+      }
+    }
+    
+    switch(mood){
+      case "ecstatic":
+        statement = "It looks like we did an outstanding job. We are extremely pleased.";
+        break;
+      case "happy":
+        statement = "It looks like we did an excellent job. We will try to keep it up!";
+        break;
+      case "neutral":
+        statement = "It looks like we did a satisfactory job. We will try to do even better next time.";
+        break;
+      case "sad":
+        statement = "Uh oh. It looks like we didn't do a good job this time. We will take your notes and work on them as best we can to improve for next time.";
+        break;
+      case "miserable":
+        statement = "Oh no! We really dropped the ball this time. We will take your suggestions and do our best to make a complete turn around.";
+        break;
+      default:
+        break;
+    }
+    let resultHTML = document.getElementById("resultText");
+    resultHTML.innerHTML = `<p>${statement}</p> <p>${categoryStatement}</p>`
+  }
+  htmlElementValueExtractor = (htmlEl) => {
+    //console.log(htmlEl);
+    let total = 0;
+    for(let field in htmlEl){
+      if(htmlEl[field].value && htmlEl[field].tagName === "INPUT"){
+        //console.log(htmlEl[field].value);
+        total += parseInt(htmlEl[field].value);
+      }
+    }
+    return total;
+  }
 
   calculator = () => {
     // calculates all of the fields to determine overall 'mood'
@@ -49,7 +125,7 @@ class App extends Component {
     this.setState({
       tally: newTotal,
       mood: moodKey[moodValue]
-    })
+    });
   }
 
   getMood = (currentMood) => {
@@ -70,16 +146,19 @@ class App extends Component {
             <h3>SCORE : {this.state.tally}</h3>
             <h3>MOOD : {this.state.mood}</h3>
         </div>
-        <div id="floatingHead"><img src={require(`./assets/${this.state.mood}.PNG`)}/></div>
+        <div id="floatingHead"><img src={require(`./assets/${this.state.mood}.PNG`)} alt={this.state.mood + " face"} /></div>
         </div>
         <main>
           {this.questionCategoryOutput()}
         </main>
         <footer>
+          <p>
           WHAT'S THE DAMAGE?
-          <button>CLICKY,CLICKY</button>
+          </p>
+          <button id="results" onClick={() => this.validator()}>GET RESULTS</button>
           <div id="resultsBox">
-            This is where the results will go.
+            <p id="resultText">
+            </p>
           </div>
         </footer>
       </div>

@@ -73,18 +73,13 @@ footer {
 }
 body {
   font-size: calc(10px + 2vmin);
-  background-color: var(--mainText);
+  background-color: var(--background);
   color: var(--mainText);
 }
 button {
-  font-weight: bold;
-  width: 60%;
-  max-width: 300px;
-  margin: 0 auto;
   background-color: var(--mainText);
-  border: 3px solid transparent;
+  border: none;
   color: var(--background);
-  outline: 0;
 }
 label {
 margin: 0;
@@ -92,14 +87,13 @@ padding: 0;
 }
 
 input {
-  outline: 0;
   font-size: 1em;
   max-width: 3em;
   background-color: var(--mainText);
   color: var(--mainColor);
   font-weight: bold;
   padding: 10px;
-  border: 3px solid transparent; 
+  border: none; 
 }
 label {
   display: block;
@@ -107,38 +101,4 @@ label {
 }
 #results {
   padding: 0.5em;
-}
-.problem {
-  border: 3px solid var(--background);
-}
-input:focus {
-  outline: 0;
-  border: 3px solid var(--highlightColor);
-}
-button:focus {
-  outline: 0;
-  border: 3px solid var(--highlightColor);
-}
-#results:focus {
-  border: 3px solid var(--mainColor);
-}
-
-/* @media(width <= 30em){ */
-@media(width >= 1200px){
-  #root {
-    max-width: 80%;
-    margin: 0 auto;
-  }
-  h1 {
-    font-size: 2em;
-  }
-  h2 {
-    font-size: 1.25em;
-  }
-  h3 {
-    font-size: 1.25em;
-  }
-  label {
-    font-size: 0.8em;
-  }
 }
