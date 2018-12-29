@@ -20,7 +20,6 @@ class App extends Component {
     tally: 0,
     mood: 'neutral'
   };
-  
   questionCategoryOutput = () => {
   let jsxy = [];
   for(let category in questions){
@@ -47,36 +46,37 @@ class App extends Component {
     }
   }
 
-  results = () => {
+results = () => {
     let statement = "";
     let categoryStatement = "";
     let score = this.state.tally;
-    let mood =  this.state.mood;
-    let foodScore = this.htmlElementValueExtractor(document.getElementsByClassName("food"));
-    let settingScore = this.htmlElementValueExtractor(document.getElementsByClassName("setting"));
-    let serviceScore = this.htmlElementValueExtractor(document.getElementsByClassName('service'));
-    let categoryScores = [[foodScore,'food'],[settingScore,'setting'],[serviceScore,'service']].sort((a,b) => {return b[0] - a[0]});
-    console.log(categoryScores);
-    console.log(foodScore, settingScore,serviceScore);
-    if(foodScore === settingScore && settingScore === serviceScore){
-      categoryStatement = "We did equally well on all categories."
-    } else {
+    let mood = this.state.mood;
+    let categoryScores = Object.keys(questions)
+    .map(cat => {
+      return [this.htmlElementValueExtractor(document.getElementsByClassName(cat),true),cat];
+    })
+    .sort((a,b) => {return b[0] - a[0]});
+    
+    const valuesTheSame = categoryScores.every((scoreArr,_,a) => scoreArr[0] === a[0][0]);
+    if(valuesTheSame){
+       categoryStatement = "We did equally well on all categories."
+      } else {
       if(categoryScores[0][0] === categoryScores[1][0]){
-        categoryStatement = `Our top two categories were ${categoryScores[0][1]} and ${categoryScores[1][1]}.`;
+         categoryStatement = `Our top two categories were ${categoryScores[0][1]} and ${categoryScores[1][1]}.`;
       }
       else {
-        categoryStatement = `Our top category was ${categoryScores[0][1]}.`
+         categoryStatement = `Our top category was ${categoryScores[0][1]}.`
       }
-      if(categoryScores[2][0] === categoryScores[1][0]){
-        categoryStatement += ` Our two worst categories were ${categoryScores[1][1]} and ${categoryScores[2][1]}`;
+      if(categoryScores[categoryScores.length-1][0] === categoryScores[categoryScores.length-2][0]){
+         categoryStatement += ` Our two worst categories were ${categoryScores[categoryScores.length-1][1]} and ${categoryScores[categoryScores.length-2][1]}`;
       }
       else {
-        categoryStatement += ` Our worst category was ${categoryScores[2][1]}.`;
+         categoryStatement += ` Our worst category was ${categoryScores[categoryScores.length-1][1]}.`;
       }
     }
     
     switch(mood){
-      case "ecstatic":
+       case "ecstatic":
         statement = "It looks like we did an outstanding job. We are extremely pleased.";
         break;
       case "happy":
@@ -97,16 +97,16 @@ class App extends Component {
     let resultHTML = document.getElementById("resultText");
     resultHTML.innerHTML = `<p>${statement}</p> <p>${categoryStatement}</p>`
   }
-  htmlElementValueExtractor = (htmlEl) => {
-    //console.log(htmlEl);
+  htmlElementValueExtractor = (htmlEl,avg) => {
     let total = 0;
+    let numberOfQuestions = 0;
     for(let field in htmlEl){
-      if(htmlEl[field].value && htmlEl[field].tagName === "INPUT"){
-        //console.log(htmlEl[field].value);
-        total += parseInt(htmlEl[field].value);
-      }
+       if(htmlEl[field].value && htmlEl[field].tagName === "INPUT"){
+         total += parseInt(htmlEl[field].value);
+         numberOfQuestions++;
+       }
     }
-    return total;
+    return avg ? Math.round(total/numberOfQuestions) : total;
   }
 
   calculator = () => {
